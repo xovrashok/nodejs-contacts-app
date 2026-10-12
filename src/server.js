@@ -3,6 +3,8 @@ import cors from 'cors';
 import pino from 'pino-http';
 import { getEnvVar } from './utils/getEnvVar.js';
 import ContactsRouter from './routers/contacts.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 export const setupServer = () => {
   const app = express();
@@ -20,11 +22,9 @@ export const setupServer = () => {
 
   app.use(ContactsRouter);
 
-  app.use((req, res) => {
-    res.status(404).json({
-      message: 'Not found',
-    });
-  });
+  app.use(notFoundHandler);
+
+  app.use(errorHandler);
 
   const PORT = Number(getEnvVar('PORT', '3000'));
 
