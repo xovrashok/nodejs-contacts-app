@@ -3,6 +3,7 @@ import {
   createContact,
   getAllContacts,
   getContactById,
+  upsertContact,
 } from '../services/contacts.js';
 
 export const getAllContactsController = async (req, res) => {
@@ -37,5 +38,20 @@ export const createContactController = async (req, res) => {
     status: 201,
     message: 'Successfully created a contact!',
     data: contact,
+  });
+};
+
+export const patchContactController = async (req, res) => {
+  const { contactId } = req.params;
+  const result = await upsertContact(contactId, req.body);
+
+  if (!result) {
+    throw createError(404, 'Contact not found');
+  }
+
+  res.json({
+    status: 200,
+    message: 'Successfully patched a contact!',
+    data: result,
   });
 };
