@@ -24,3 +24,9 @@ export const upsertContact = async (contactId, payload) => {
 
   return contact;
 };
+
+export const deleteContact = async (contactId) => {
+  const contact = await ContactCollection.findByIdAndDelete(contactId);
+
+  return contact;
+};
